@@ -9,23 +9,26 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $table = 'users';
+
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected $primaryKey = 'dni';
+    public $incrementing = false;
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'dni','type','name','last_name','username',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
-        'password', 'remember_token',
+        'passChanged','password', 'remember_token',
     ];
+
+    public function legal_tutor(){
+        return $this->hasMany(Tutelage::class, 'legal_tutor_id', 'dni');
+    }
+
+    public function counselor(){
+        return $this->hasMany(Orientation::class, 'counselor_id', 'dni');
+    }
 }
