@@ -8,78 +8,91 @@ use App\Http\Controllers\Controller;
 class TrackingTestController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
+     * Método para devolver todos los seguimientos de tests
+     * 
      * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    */
+    public function index() {
+        $trackings = Tracking_test::all();
+        
+        return response()->json(['Tracking tests' => $trackings->toArray()], $this->successStatus);
     }
-
+    
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Método para crear un seguimiento de test
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    */
+    public function store(Request $request) {
+        $input = $request->all();
+        
+        $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,dni|unique:tracking_tests,pupil_id',
+        'result' => 'in:DDDD,IIII,DIDI','comment'=>'string',
+        ]);
+        
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        
+        $tracking = Tracking_test::create($input);
+        
+        return response()->json(['Tracking_test' => $tracking->toArray()], $this->successStatus);
     }
-
+    
     /**
-     * Display the specified resource.
-     *
+     * Método para mostrar un seguimiento de test segun su id
+     * 
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    */
+    public function show($id) {
+        $tracking = Tracking_test::find($id);
+        
+        if (is_null($tracking)) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        
+        return response()->json(['Tracking_test' => array_merge($tracking->toArray()) ], $this->successStatus);
     }
-
+     
+    
+    
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
+     * Método para modificar datos de un seguimiento de test
+     * 
+     * @param int $id
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    */
+    public function update($id, Request $request) {
+        $input = $request->all();
+        
+        $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,dni|unique:tracking_tests,pupil_id',
+        'result' => 'in:DDDD,IIII,DIDI','comment'=>'string'
+        ]);
+        
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        
+        $tracking = Tracking_test::find($id);
+        $tracking->update($input);
 
+        return response()->json(['Tracking_test' => $tracking->toArray()], $this->successStatus);
+    }
+    
     /**
-     * Remove the specified resource from storage.
+     * Método para eliminar un seguimiento de test
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        $tracking = Tracking_test::find($id);
+        $tracking->delete();
+        
+        return response()->json(['Tracking_test' => $tracking->toArray()], $this->successStatus);
     }
+    
 }

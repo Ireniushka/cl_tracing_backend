@@ -26,7 +26,7 @@ class AuthController extends Controller
         if(Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
             $user = Auth::user();
             // Se crea token de acceso
-            $success['token'] = $user->createToken('PersonalToken')->accessToken;
+            $success['remember_token'] = $user->createToken('PersonalToken')->accessToken;
             $success['dni'] = $user->dni;
             $success['name'] = $user->name;
             $success['username'] = $user->username;

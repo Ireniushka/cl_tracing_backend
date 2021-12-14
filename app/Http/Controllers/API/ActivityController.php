@@ -7,79 +7,93 @@ use App\Http\Controllers\Controller;
 
 class ActivityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
-     * Show the form for creating a new resource.
+     * Método para devolver todas las actividades
      *
      * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    */
+    public function index() {
+        $activities = Activity::all();
+        
+        return response()->json(['Activities' => $activities->toArray()], $this->successStatus);
     }
-
+    
     /**
-     * Store a newly created resource in storage.
+     * Método para crear una actividad
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    */
+    public function store(Request $request) {
+        $input = $request->all();
+        
+        $validator = Validator::make($input, ['name' => 'required|string|max:50','url'=> 'string|max:100',
+        'url_type' => 'in:web,file,nothing','enunciation'=> 'required|string','description'=> 'required|string',
+        'materials'=> 'required|string']);
+        
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        
+        $activity = Activity::create($input);
+        
+        return response()->json(['Activity' => $activity->toArray()], $this->successStatus);
     }
-
+    
     /**
-     * Display the specified resource.
-     *
+     * Método para mostrar una actividad segun su id
+     * 
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    */
+    public function show($id) {
+        $activity = Activity::find($id);
+        
+        if (is_null($activity)) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        
+        return response()->json(['Activity' => $activity->toArray()], $this->successStatus);
     }
-
+     
+    
+    
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
+     * Método para modificar una actividad
+     * 
+     * @param int $id
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    */
+    public function update($id, Request $request) {
+        $input = $request->all();
+        
+        $validator = Validator::make($input, ['name' => 'required|string|max:50','url'=> 'string|max:100',
+        'url_type' => 'in:web,file,nothing','enunciation'=> 'required|string','description'=> 'required|string',
+        'materials'=> 'required|string']);
+        
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 401);
+        }
 
+        $activity = Activity::find($id);
+        $activity->update($input);
+
+        return response()->json(['Activity' => $activity->toArray()], $this->successStatus);
+    }
+    
     /**
-     * Remove the specified resource from storage.
+     * Método para eliminar una actividad
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        $activity = Activity::find($id);
+        $activity->delete();
+        
+        return response()->json(['Activity' => $activity->toArray()], $this->successStatus);
     }
+    
 }

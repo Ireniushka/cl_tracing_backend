@@ -6,80 +6,101 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
-{
+{    
     /**
-     * Display a listing of the resource.
+     * Método para devolver todas los usuarios
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $users = User::all();
+        
+        return response()->json(['Users' => $users->toArray()], $this->successStatus);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
-     * Store a newly created resource in storage.
+     * Método para crear un usuario
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        //Se valida formulario
+        $validator = Validator::make($request->all(), [ 'dni' => 'required|unique:pupils,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
+        'type','name' => 'required|string','last_name' => 'required|string','username' => 'unique:users,username|string|max:45',
+        'password','passChanged' => 'boolean'       
+        ]);
+
+        //Se devuelve error si falla la validacion
+        if($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }else{
+            //Si esta todo correcto se guarda al nuevo usuario, encriptando la contraseña
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $user = User::create($input);
+
+            return response()->json(['User' =>  $user->toArray()], $this->successStatus);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Método para mostrar un usuario segun su id
      *
-     * @param  int  $id
+     * @param  string  $dni
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($dni) {
+        $user = User::find($dni);
+        
+        if (is_null($user)) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        
+        return response()->json(['User' => $user->toArray()], $this->successStatus);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
+     * Método para modificar datos de un usuario
      *
+     * @param string  $dni
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update($dni,Request $request) {
+        $input = $request->all();
+        
+        $validator = Validator::make($input, ['dni' => 'required|unique:pupils,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
+        'type','name' => 'required|string','last_name' => 'required|string','username' => 'unique:users,username|string|max:45',
+        'password','passChanged' => 'boolean' 
+        ]);
+        
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        if(array_key_exists('password', $input)){
+            $input['password'] = bcrypt($input['password']);
+        }
+        
+        $user = User::find($dni);
+        $user->update($input);
+
+        return response()->json(['User' => $user->toArray()], $this->successStatus);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Método para eliminar un usuario
      *
-     * @param  int  $id
+     * @param  string  $dni
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($dni) {
+        $user = User::find($dni);
+        $user->delete();
+        
+        return response()->json(['User' => $user->toArray()], $this->successStatus);
     }
 }

@@ -7,79 +7,92 @@ use App\Http\Controllers\Controller;
 
 class PupilController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Método para devolver todos los alumnos
+     * 
      * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    */
+    public function index() {
+        $pupils = Pupil::all();
+        
+        return response()->json(['Pupils' => $pupils->toArray()], $this->successStatus);
     }
-
+    
     /**
-     * Store a newly created resource in storage.
+     * Método para crear un alumno
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    */
+    public function store(Request $request) {
+        $input = $request->all();
+        
+        $validator = Validator::make($input, ['dni' => 'required|unique:pupils,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
+        'name' => 'required|string','last_name' => 'required|string','course' => 'string']);
+        
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        
+        $pupil = Pupil::create($input);
+        
+        return response()->json(['Pupil' => $pupil->toArray()], $this->successStatus);
     }
+    
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
+     * Método para mostrar un alumno segun su dni
+     * 
+     * @param  string  $dni
      * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    */
+    public function show($dni) {
+        $pupil = Pupil::find($dni);
+        
+        if (is_null($pupil)) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json(['Pupil' => array_merge($pupil->toArray())], $this->successStatus);
     }
-
+     
+    
+    
     /**
-     * Update the specified resource in storage.
-     *
+     * Método para modificar datos de un alumno
+     * 
+     * @param string  $dni
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    */
+    public function update($dni, Request $request) {
+        $input = $request->all();
+        
+        $validator = Validator::make($input, ['dni' => 'required|unique:pupils,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
+        'name' => 'required|string','last_name' => 'required|string','course' => 'string']);
+        
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        
+        $pupil = Pupil::find($dni);
+        $pupil->update($input);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json(['Pupil' => $pupil->toArray()], $this->successStatus);
     }
+    
+    /**
+     * Método para eliminar un educando
+     *
+     * @param  string  $dni
+     * @return \Illuminate\Http\Response 
+     */
+    public function destroy($dni) {
+        $pupil = Pupil::find($dni);
+        $pupil->delete();
+        
+        return response()->json(['Pupil' => $pupil->toArray()], $this->successStatus);
+    }
+    
 }
