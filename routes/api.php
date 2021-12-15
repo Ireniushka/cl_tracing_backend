@@ -22,3 +22,5 @@ Route::post('login', 'API\Auth\AuthController@login');
 
 
 Route::resource('activity', 'API\ActivityController');
+
+Route::resource('user', 'API\UserController');
