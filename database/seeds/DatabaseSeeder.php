@@ -13,15 +13,16 @@ class DatabaseSeeder extends Seeder
     {
         factory(\App\User::class)->create(['dni'=>'11111111-Q','username'=> 'counselor','password'=>bcrypt('123456'), 'type'=>'counselor']);
     
-        factory(\App\Pupil::class, 30)->create();
-
         factory(\App\User::class, 20)->create(['type'=>'legal_tutor']);
         
-        factory(\App\Orientation::class, 30)->create(['counselor_id'=>'11111111-Q']);
 
-        factory(\App\Tutelage::class, 40)->create();
+        factory(\App\Pupil::class, 30)->create();
+
+        
+        factory(\App\Relation::class, 50)->create();
 
         factory(\App\Activity::class, 15)->create();
+
         factory(\App\Tracking_activity::class, 50)->create();
 
         factory(\App\Tracking_test::class, 50)->create();

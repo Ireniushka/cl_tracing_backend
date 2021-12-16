@@ -4,25 +4,28 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Relation;
+use App\User;
 use App\Pupil;
 use Validator;
 
-class PupilController extends Controller
+class RelationController extends Controller
 {
     
     /**
-     * Método para devolver todos los alumnos
-     * 
+     * Método para devolver todas las relaciones
+     *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function index() {
-        $pupils = Pupil::all();
+        $relations = Relation::all();
         
-        return response()->json(['Pupils' => $pupils->toArray()], $this->successStatus);
+        return response()->json(['relations' => $relations->toArray()], $this->successStatus);
     }
-    
+
+
     /**
-     * Método para crear un alumno
+     * Método para crear una relacion
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -30,39 +33,39 @@ class PupilController extends Controller
     public function store(Request $request) {
         $input = $request->all();
         
-        $validator = Validator::make($input, ['dni' => 'required|unique:pupils,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
+        $validator = Validator::make($input, ['dni' => 'required|unique:relations,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
         'name' => 'required|string','last_name' => 'required|string','course' => 'string']);
         
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);
         }
         
-        $pupil = Pupil::create($input);
+        $relation = Relation::create($input);
         
-        return response()->json(['Pupil' => $pupil->toArray()], $this->successStatus);
+        return response()->json(['Relation' => $relation->toArray()], $this->successStatus);
     }
     
 
     /**
-     * Método para mostrar un alumno segun su dni
+     * Método para mostrar una relacion segun su dni
      * 
      * @param  int  $id
      * @return \Illuminate\Http\Response
     */
     public function show($id) {
-        $pupil = Pupil::find($id);
+        $relation = Relation::find($id);
         
-        if (is_null($pupil)) {
+        if (is_null($relation)) {
             return response()->json(['error' => $validator->errors()], 401);
         }
 
-        return response()->json(['Pupil' => array_merge($pupil->toArray())], $this->successStatus);
+        return response()->json(['Relation' => array_merge($relation->toArray())], $this->successStatus);
     }
      
     
     
     /**
-     * Método para modificar datos de un alumno
+     * Método para modificar datos de una relacion
      * 
      * @param int $id
      * @param  \Illuminate\Http\Request  $request
@@ -71,30 +74,30 @@ class PupilController extends Controller
     public function update($id, Request $request) {
         $input = $request->all();
         
-        $validator = Validator::make($input, ['dni' => 'unique:pupils,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
+        $validator = Validator::make($input, ['dni' => 'unique:relations,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
         'name' => 'string','last_name' => 'string','course' => 'string']);
         
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);
         }
         
-        $pupil = Pupil::find($id);
-        $pupil->update($input);
+        $relation = Relation::find($id);
+        $relation->update($input);
 
-        return response()->json(['Pupil' => $pupil->toArray()], $this->successStatus);
+        return response()->json(['Relation' => $relation->toArray()], $this->successStatus);
     }
     
     /**
-     * Método para eliminar un educando
+     * Método para eliminar una relacion
      *
      * @param  int $id
      * @return \Illuminate\Http\Response 
      */
     public function destroy($id) {
-        $pupil = Pupil::find($id);
-        $pupil->delete();
+        $relation = Relation::find($id);
+        $relation->delete();
         
-        return response()->json(['Pupil' => $pupil->toArray()], $this->successStatus);
+        return response()->json(['Relation' => $relation->toArray()], $this->successStatus);
     }
     
 }

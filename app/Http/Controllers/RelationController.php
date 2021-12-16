@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class TutelageController extends Controller
+class RelationController extends Controller
 {
     //
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTrackingActivitiesTable extends Migration
+class CreateRelationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateTrackingActivitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tracking_activities', function (Blueprint $table) {
-            $table->engine = "InnoDB"; 
-            $table->increments('id', 11);
+        Schema::create('relations', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedInteger('pupil_id')->index();
             $table->foreign('pupil_id')->references('id')->on('pupils')->onDelete('cascade');
-            $table->unsignedInteger('activity_id')->index();
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
-            $table->text('comment');
+            $table->unsignedInteger('user_id')->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum('relation', ['legal_tutor','counselor']);
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateTrackingActivitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tracking_activities');
+        Schema::dropIfExists('relations');
     }
 }

@@ -16,8 +16,8 @@ class CreateTrackingTestsTable extends Migration
         Schema::create('tracking_tests', function (Blueprint $table) {
             $table->engine = "InnoDB"; 
             $table->bigIncrements('id', 11);
-            $table->string('pupil_id')->index();
-            $table->foreign('pupil_id')->references('dni')->on('pupils')->onDelete('cascade');
+            $table->unsignedInteger('pupil_id')->index();
+            $table->foreign('pupil_id')->references('id')->on('pupils')->onDelete('cascade');
             $table->enum('result', ['DDDD','IIII','DIDI']);
             $table->text('comment');
             $table->timestamps();

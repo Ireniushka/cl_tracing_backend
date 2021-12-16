@@ -8,9 +8,6 @@ class Pupil extends Model
 {
     protected $table = 'pupils';
 
-    protected $primaryKey = 'dni';
-    public $incrementing = false;
-
     public $timestamps = false;
 
     protected $fillable = [
@@ -18,20 +15,15 @@ class Pupil extends Model
     ];
 
 
-    public function tutelage(){
-        return $this->hasMany(Tutelage::class, 'pupil_id', 'dni');
+    public function relations(){
+        return $this->hasMany(Relation::class);
     }
 
-    //??
-    public function counselor(){
-        return $this->hasOne(Orientation::class, 'counselor_id', 'dni');
+    public function track_activities(){
+        return $this->hasMany(Tracking_activity::class);
     }
 
-    public function track_activity(){
-        return $this->hasMany(Tracking_activity::class, 'pupil_id', 'dni');
-    }
-
-    public function track_test(){
-        return $this->hasMany(Tracking_test::class, 'pupil_id', 'dni');
+    public function track_tests(){
+        return $this->hasMany(Tracking_test::class);
     }
 }

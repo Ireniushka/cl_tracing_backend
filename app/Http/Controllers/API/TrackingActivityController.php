@@ -4,6 +4,10 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Tracking_activity;
+use App\Activity;
+use App\Pupil;
+use Validator;
 
 class TrackingActivityController extends Controller
 {
@@ -26,8 +30,8 @@ class TrackingActivityController extends Controller
     public function store(Request $request) {
         $input = $request->all();
         
-        $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,dni|unique:tracking_activities,pupil_id',
-        'activity_id'=>'required|exists:activities,id|unique:tracking_activities,activity_id','comment'=>'string',]);
+        $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,id',
+        'activity_id'=>'required|exists:activities,id','comment'=>'string',]);
         
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);
@@ -66,8 +70,8 @@ class TrackingActivityController extends Controller
     public function update($id, Request $request) {
         $input = $request->all();
         
-        $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,dni|unique:tracking_activities,pupil_id',
-        'activity_id'=>'required|exists:activities,id|unique:tracking_activities,activity_id','comment'=>'string',]);
+        $validator = Validator::make($input, ['pupil_id'=>'exists:pupils,id',
+        'activity_id'=>'exists:activities,id','comment'=>'string',]);
         
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);

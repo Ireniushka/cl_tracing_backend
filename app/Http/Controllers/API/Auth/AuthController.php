@@ -1,21 +1,17 @@
 <?php
 
-namespace AppScout\Http\Controllers\API;
+namespace App\Http\Controllers\API\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use AppScout\Http\Controllers\Controller;
-use AppScout\User;
+use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Support\Facades\Auth; 
 use Validator;
 
 
 class AuthController extends Controller
 { 
-    public $successStatus = 200;
-
-
-
     /**
      * Método para entrar en la aplicación
      *
@@ -87,7 +83,7 @@ class AuthController extends Controller
     public function changePass(Request $request) {
         //Se valida formulario
         $validator = Validator::make($request->all(), [ 
-            'old_password' => 'required|exists:users,password,dni,Auth::user()->dni',
+            'old_password' => 'required|exists:users,password,id,Auth::user()->id',
             'new_password' => 'required',
             'repeat_password' => 'required|same:new_password'      
         ]);//otra idea seria comprobar desde ionic la antigua pass y luego pasar a vista de cambio de passwd
@@ -100,7 +96,7 @@ class AuthController extends Controller
             $input = $request->all();
             $input['new_password'] = bcrypt($input['new_password']);
             
-            User::where('dni',Auth::user()->dni)
+            User::where('id',Auth::user()->id)
             ->update(['password'=>$input['new_password']]);
 
             return response()->json(['success' => $success], $this->successStatus);

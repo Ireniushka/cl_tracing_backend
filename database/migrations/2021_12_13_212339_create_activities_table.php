@@ -15,7 +15,7 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->engine = "InnoDB"; 
-            $table->bigIncrements('id', 11);
+            $table->increments('id', 11);
             $table->string('name', 50);
             $table->string('url', 100)->nullable();
             $table->enum('url_type', ['web','file','nothing'])->default('nothing');

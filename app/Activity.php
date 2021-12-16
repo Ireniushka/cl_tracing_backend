@@ -14,8 +14,8 @@ class Activity extends Model
 
 
 
-    public function track_activity(){
-        return $this->hasMany(Tracking_activity::class, 'activity_id', 'id');
+    public function track_activities(){
+        return $this->hasMany(Tracking_activity::class);
     }
 
 }

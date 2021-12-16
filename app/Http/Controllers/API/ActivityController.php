@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Activity;
+use Validator;
 
 class ActivityController extends Controller
 {
@@ -69,9 +71,9 @@ class ActivityController extends Controller
     public function update($id, Request $request) {
         $input = $request->all();
         
-        $validator = Validator::make($input, ['name' => 'required|string|max:50','url'=> 'string|max:100',
-        'url_type' => 'in:web,file,nothing','enunciation'=> 'required|string','description'=> 'required|string',
-        'materials'=> 'required|string']);
+        $validator = Validator::make($input, ['name' => 'string|max:50','url'=> 'string|max:100',
+        'url_type' => 'in:web,file,nothing','enunciation'=> 'string','description'=> 'string',
+        'materials'=> 'string']);
         
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);

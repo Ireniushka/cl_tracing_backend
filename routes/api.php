@@ -21,6 +21,12 @@ Route::post('login', 'API\Auth\AuthController@login');
 
 
 
-Route::resource('activity', 'API\ActivityController');
+Route::middleware('auth:api')->group( function () { 
+    Route::resource('users', 'API\UserController');
+    Route::resource('pupils', 'API\PupilController');
+    Route::resource('relations', 'API\RelationController');
+    Route::resource('activities', 'API\ActivityController');
+    Route::resource('tracking_acts', 'API\TrackingActivityController');
+    Route::resource('tracking_tests', 'API\TrackingTestController');
+});
 
-Route::resource('user', 'API\UserController');

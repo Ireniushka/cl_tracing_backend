@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Tracking_test;
+use App\Pupil;
+use Validator;
 
 class TrackingTestController extends Controller
 {
@@ -27,7 +30,7 @@ class TrackingTestController extends Controller
     public function store(Request $request) {
         $input = $request->all();
         
-        $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,dni|unique:tracking_tests,pupil_id',
+        $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,id',
         'result' => 'in:DDDD,IIII,DIDI','comment'=>'string',
         ]);
         
@@ -68,7 +71,7 @@ class TrackingTestController extends Controller
     public function update($id, Request $request) {
         $input = $request->all();
         
-        $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,dni|unique:tracking_tests,pupil_id',
+        $validator = Validator::make($input, ['pupil_id'=>'exists:pupils,id',
         'result' => 'in:DDDD,IIII,DIDI','comment'=>'string'
         ]);
         
