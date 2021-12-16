@@ -11,7 +11,7 @@ class Pupil extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'dni','name','last_name','course','counselor_id',
+        'dni','name','last_name','course',
     ];
 
 
