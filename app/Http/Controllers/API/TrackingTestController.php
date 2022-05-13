@@ -31,7 +31,7 @@ class TrackingTestController extends Controller
         $input = $request->all();
         
         $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,id',
-        'result' => 'in:DDDD,IIII,DIDI','comment'=>'string',
+        'lat_cruzada' => 'boolean','comment'=>'string',
         ]);
         
         if($validator->fails()){
@@ -71,9 +71,7 @@ class TrackingTestController extends Controller
     public function update($id, Request $request) {
         $input = $request->all();
         
-        $validator = Validator::make($input, ['pupil_id'=>'exists:pupils,id',
-        'result' => 'in:DDDD,IIII,DIDI','comment'=>'string'
-        ]);
+        $validator = Validator::make($input, ['pupil_id'=>'exists:pupils,id','lat_cruzada' => 'boolean','comment'=>'string']);
         
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);

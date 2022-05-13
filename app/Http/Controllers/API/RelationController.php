@@ -34,7 +34,7 @@ class RelationController extends Controller
         $input = $request->all();
         
         $validator = Validator::make($input, ['pupil_id'=>'required|exists:pupils,id',
-        'user_id'=>'required|exists:users,id','relation' => 'required|in:legal_tutor,counselor']);
+        'user_id'=>'required|exists:users,id']);
         
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);
@@ -75,7 +75,7 @@ class RelationController extends Controller
         $input = $request->all();
         
         $validator = Validator::make($input, ['pupil_id'=>'exists:pupils,id',
-        'user_id'=>'exists:users,id','relation' => 'in:legal_tutor,counselor']);
+        'user_id'=>'exists:users,id']);
         
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);

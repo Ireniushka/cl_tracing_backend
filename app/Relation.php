@@ -10,7 +10,7 @@ class Relation extends Model
 
 
     protected $fillable = [
-        'pupil_id','user_id','relation',
+        'pupil_id','user_id'
     ];
 
 

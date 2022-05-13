@@ -18,7 +18,7 @@ class CreateTrackingTestsTable extends Migration
             $table->bigIncrements('id', 11);
             $table->unsignedInteger('pupil_id')->index();
             $table->foreign('pupil_id')->references('id')->on('pupils')->onDelete('cascade');
-            $table->enum('result', ['DDDD','IIII','DIDI']);
+            $table->tinyInteger('lat_cruzada')->default(1);
             $table->text('comment');
             $table->timestamps();
         });

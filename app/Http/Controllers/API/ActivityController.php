@@ -31,7 +31,7 @@ class ActivityController extends Controller
         $input = $request->all();
         
         $validator = Validator::make($input, ['name' => 'required|string|max:50','url'=> 'string|max:100',
-        'url_type' => 'in:web,file,nothing','enunciation'=> 'required|string','description'=> 'required|string',
+        'url_type' => 'in:web,file,nothing', 'file_type' => 'in:simetria,atencion,diferencias,lateralidad,otros', 'enunciation'=> 'required|string','description'=> 'required|string',
         'materials'=> 'required|string']);
         
         if($validator->fails()){
@@ -72,7 +72,7 @@ class ActivityController extends Controller
         $input = $request->all();
         
         $validator = Validator::make($input, ['name' => 'string|max:50','url'=> 'string|max:100',
-        'url_type' => 'in:web,file,nothing','enunciation'=> 'string','description'=> 'string',
+        'url_type' => 'in:web,file,nothing', 'file_type' => 'in:simetria,atencion,diferencias,lateralidad,otros','enunciation'=> 'string','description'=> 'string',
         'materials'=> 'string']);
         
         if($validator->fails()){

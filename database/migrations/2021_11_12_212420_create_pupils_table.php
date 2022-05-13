@@ -16,7 +16,7 @@ class CreatePupilsTable extends Migration
         Schema::create('pupils', function (Blueprint $table) {
             $table->engine = "InnoDB"; 
             $table->increments('id', 11);
-            $table->string('dni', 10);
+            $table->string('dni', 10)->unique();
             $table->string('name', 30);
             $table->string('last_name', 50);
             $table->string('course', 150)->nullable();

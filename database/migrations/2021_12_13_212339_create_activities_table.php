@@ -17,8 +17,9 @@ class CreateActivitiesTable extends Migration
             $table->engine = "InnoDB"; 
             $table->increments('id', 11);
             $table->string('name', 50);
-            $table->string('url', 100)->nullable();
+            $table->text('url')->nullable();
             $table->enum('url_type', ['web','file','nothing'])->default('nothing');
+            $table->enum('file_type', ['simetria', 'atencion', 'diferencias','lateralidad', 'otros'])->default('otros');
             $table->text('enunciation')->nullable();
             $table->text('description')->nullable();
             $table->text('materials')->nullable();

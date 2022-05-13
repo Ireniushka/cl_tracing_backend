@@ -19,7 +19,6 @@ class CreateRelationsTable extends Migration
             $table->foreign('pupil_id')->references('id')->on('pupils')->onDelete('cascade');
             $table->unsignedInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('relation', ['legal_tutor','counselor']);
             $table->timestamps();
         });
     }

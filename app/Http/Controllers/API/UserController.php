@@ -32,7 +32,7 @@ class UserController extends Controller
         //Se valida formulario
         $validator = Validator::make($request->all(), [ 'dni' => 'required|unique:users,dni|regex:/^\d{8}[-]{1}[A-Z]{1}/',
         'type','name' => 'required|string','last_name' => 'required|string','username' => 'unique:users,username|string|max:45',
-        'password','passChanged' => 'boolean'       
+        'email' => 'unique:users,email|string','password','passChanged' => 'boolean'       
         ]);
 
         //Se devuelve error si falla la validacion

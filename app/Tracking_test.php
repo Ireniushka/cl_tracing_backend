@@ -9,7 +9,7 @@ class Tracking_test extends Model
     protected $table = 'tracking_tests';
 
     protected $fillable = [
-        'pupil_id','result','comment',
+        'pupil_id','lat_cruzada','comment',
     ];
 
     public function pupil() {

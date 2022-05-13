@@ -9,7 +9,7 @@ class Activity extends Model
     protected $table = 'activities';
 
     protected $fillable = [
-        'name','url','url_type','enunciation','description','materials',
+        'name','url','url_type','enunciation','description','materials', 'file_type'
     ];
 
 
