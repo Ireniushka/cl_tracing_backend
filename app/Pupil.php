@@ -8,8 +8,6 @@ class Pupil extends Model
 {
     protected $table = 'pupils';
 
-    public $timestamps = false;
-
     protected $fillable = [
         'dni','name','last_name','course',
     ];

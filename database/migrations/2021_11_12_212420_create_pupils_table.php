@@ -20,6 +20,7 @@ class CreatePupilsTable extends Migration
             $table->string('name', 30);
             $table->string('last_name', 50);
             $table->string('course', 150)->nullable();
+            $table->timestamps();
         });
     }
 
