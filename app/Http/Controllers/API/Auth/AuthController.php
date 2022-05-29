@@ -23,9 +23,14 @@ class AuthController extends Controller
             $user = Auth::user();
             // Se crea token de acceso
             $success['remember_token'] = $user->createToken('PersonalToken')->accessToken;
+            $success['id'] = $user->id;
             $success['dni'] = $user->dni;
+            $success['type'] = $user->type;
             $success['name'] = $user->name;
+            $success['last_name'] = $user->last_name;
             $success['username'] = $user->username;
+            $success['email'] = $user->email;
+            $success['password'] = $user->password;
             $success['passChanged'] = $user->passChanged;
             
             return response()->json(['success' => $success], $this->successStatus);
